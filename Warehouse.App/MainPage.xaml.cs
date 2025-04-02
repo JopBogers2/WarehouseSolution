@@ -1,24 +1,31 @@
-﻿namespace Warehouse.App
+﻿using Warehouse.App.MVVM.Services;
+using Warehouse.App.MVVM.Views;
+
+namespace Warehouse.App
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
+        private readonly IAuthService _authService;
 
-        public MainPage()
+        public MainPage(IAuthService authService)
         {
             InitializeComponent();
+            _authService = authService;
         }
 
-        private void OnCounterClicked(object sender, EventArgs e)
+        protected override async void OnNavigatedTo(NavigatedToEventArgs args)
         {
-            count++;
+            base.OnNavigatedTo(args);
 
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
+            await Task.Delay(1);
+            if (await _authService.IsUserAuthenticated())
+            {
+                await Shell.Current.GoToAsync($"//{nameof(HomePage)}");
+            }
             else
-                CounterBtn.Text = $"Clicked {count} times";
-
-            SemanticScreenReader.Announce(CounterBtn.Text);
+            {
+                await Shell.Current.GoToAsync($"//{nameof(LoginPage)}");
+            }
         }
     }
 

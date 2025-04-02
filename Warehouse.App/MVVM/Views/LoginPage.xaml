@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Warehouse.App.MVVM.Views.LoginPage"
+             >
+
+    <Grid Padding="30" RowSpacing="25" VerticalOptions="Center">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Label Text="Login" FontSize="Large" FontAttributes="Bold" TextColor="{StaticResource PrimaryDark}" HorizontalOptions="Center" Grid.Row="0" />
+
+        <StackLayout Spacing="10" Grid.Row="1">
+            <Label Text="Username" FontSize="18" />
+            <Entry Text="{Binding Username}" Placeholder="Enter your username" />
+        </StackLayout>
+        <StackLayout Spacing="10" Grid.Row="2">
+            <Label Text="Password" FontSize="18" />
+            <Entry Text="{Binding Password}" Placeholder="Enter your password" IsPassword="True" />
+        </StackLayout>
+        <Label Text="{Binding ErrorMessage}" TextColor="Red" IsVisible="{Binding ErrorMessage, Converter={StaticResource StringNotEmptyConverter}}" Grid.Row="3" />
+
+        <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="10" Grid.Row="4">
+            <Button Text="Login" Command="{Binding LoginCommand}" IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}"
+                   CornerRadius="20" Padding="40,5" FontAttributes="Bold"/>
+            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
+        </StackLayout>
+    </Grid>
+</ContentPage>
