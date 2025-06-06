@@ -1,61 +1,67 @@
-﻿using System.Runtime.CompilerServices;
-using System.Windows.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Warehouse.App.MVVM.Models;
 using Warehouse.App.MVVM.Services;
 using Warehouse.App.MVVM.Views;
 
 namespace Warehouse.App.MVVM.ViewModels
 {
-    public class LoginViewModel : BaseViewModel
+    public partial class LoginViewModel : ObservableObject
     {
         private readonly IAuthService authService;
 
-        private string? _username;
-        private string? _password;
-        private string? _errorMessage;
-        private bool _isBusy = false;
+        [ObservableProperty]
+        private string _username = string.Empty;
+
+        [ObservableProperty]
+        private string _password = string.Empty;
+
+        [ObservableProperty]
+        private string _errorMessage = string.Empty;
+
+        [ObservableProperty]
+        private bool _valid = false;
+
+        [ObservableProperty]
+        private bool _loading = false;
+
+        public bool CanLogin => Valid && !Loading;
 
         public LoginViewModel(IAuthService authService)
         {
             this.authService = authService;
-            LoginCommand = new Command(OnLogin, CanLogin);
         }
 
-        public string? Username
+        partial void OnUsernameChanged(string value)
         {
-            get => _username;
-            set => SetProperty(ref _username, value);
+            Validate();
+        }
+        partial void OnValidChanged(bool value)
+        {
+            OnPropertyChanged(nameof(CanLogin));
         }
 
-        public string? Password
+        partial void OnLoadingChanged(bool value)
         {
-            get => _password;
-            set => SetProperty(ref _password, value);
+            OnPropertyChanged(nameof(CanLogin));
         }
 
-        public string? ErrorMessage
+        partial void OnPasswordChanged(string value)
         {
-            get => _errorMessage;
-            set => SetProperty(ref _errorMessage, value);
+            Validate();
         }
 
-        public bool IsBusy
+        private void Validate()
         {
-            get => _isBusy;
-            set => SetProperty(ref _isBusy, value);
-        }
-        public ICommand LoginCommand { get; }
-
-        private bool CanLogin()
-        {
-            return !IsBusy && !string.IsNullOrWhiteSpace(Username) && !string.IsNullOrWhiteSpace(Password);
+            Valid = !string.IsNullOrWhiteSpace(Username) && !string.IsNullOrWhiteSpace(Password);
         }
 
-        private async void OnLogin()
+        [RelayCommand]
+        private async Task Login()
         {
-            IsBusy = true;
-            var error = await authService.LoginAsync(new LoginRequestDto(Username!, Password!));
-            IsBusy = false;
+            Loading = true;
+            var error = await authService.LoginAsync(new LoginRequestDto(Username, Password));
+            Loading = false;
             if (string.IsNullOrWhiteSpace(error))
             {
                 await Shell.Current.GoToAsync($"//{nameof(HomePage)}");
@@ -63,13 +69,6 @@ namespace Warehouse.App.MVVM.ViewModels
             }
 
             ErrorMessage = error;
-        }
-
-        protected override void OnPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            base.OnPropertyChanged(propertyName);
-
-            ((Command)LoginCommand).ChangeCanExecute();
         }
     }
 }

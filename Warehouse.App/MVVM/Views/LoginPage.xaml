@@ -26,9 +26,13 @@
         <Label Text="{Binding ErrorMessage}" TextColor="Red" IsVisible="{Binding ErrorMessage, Converter={StaticResource StringNotEmptyConverter}}" Grid.Row="3" />
 
         <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="10" Grid.Row="4">
-            <Button Text="Login" Command="{Binding LoginCommand}" IsEnabled="{Binding IsBusy, Converter={StaticResource InverseBooleanConverter}}"
-                   CornerRadius="20" Padding="40,5" FontAttributes="Bold"/>
-            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
+            <Button Text="Login" 
+                    Command="{Binding LoginCommand}" 
+                    IsEnabled="{Binding CanLogin}"
+                    CornerRadius="20" 
+                    Padding="40,5" 
+                    FontAttributes="Bold"/>
+            <ActivityIndicator IsRunning="{Binding Loading}" IsVisible="{Binding Loading}" />
         </StackLayout>
     </Grid>
 </ContentPage>
