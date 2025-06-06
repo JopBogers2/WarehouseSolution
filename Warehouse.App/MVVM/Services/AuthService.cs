@@ -7,17 +7,23 @@ namespace Warehouse.App.MVVM.Services
 {
     public interface IAuthService
     {
+        Task<string> GetAccessTokenAsync();
         Task<bool> IsUserAuthenticated();
         Task<string?> LoginAsync(LoginRequestDto dto);
         void Logout();
     }
     public class AuthService : IAuthService
     {
-        private readonly IHttpClientFactory HttpClient;
+        private readonly IHttpClientFactory _httpClient;
 
         public AuthService(IHttpClientFactory httpClient)
         {
-            HttpClient = httpClient;
+            _httpClient = httpClient;
+        }
+
+        public async Task<string> GetAccessTokenAsync()
+        {
+            return await SecureStorage.Default.GetAsync(AppConstants.JwtTokenKeyName) ?? string.Empty;
         }
 
         public async Task<bool> IsUserAuthenticated()
@@ -36,7 +42,7 @@ namespace Warehouse.App.MVVM.Services
 
         public async Task<string?> LoginAsync(LoginRequestDto dto)
         {
-            var httpClient = HttpClient.CreateClient(AppConstants.AuthHttpClientName);
+            var httpClient = _httpClient.CreateClient(AppConstants.AuthHttpClientName);
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes($"{dto.Username}:{dto.Password}")));
 
             var response = await httpClient.GetAsync("/api/v1/authenticate");
