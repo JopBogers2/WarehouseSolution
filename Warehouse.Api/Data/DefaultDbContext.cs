@@ -5,6 +5,8 @@ namespace Warehouse.Api.Data
 {
     public class DefaultDbContext(DbContextOptions<DefaultDbContext> options) : DbContext(options)
     {
-        public DbSet<Return> Returns { get; set; }
+        public DbSet<ReturnMerchandiseAuthorization> ReturnMerchandiseAuthorization { get; set; }
+        public DbSet<ReturnMerchandiseAuthorizationLine> ReturnMerchandiseAuthorizationLines { get; set; }
+        public DbSet<TrackAndTrace> TrackAndTraces { get; set; }
     }
 }

@@ -21,7 +21,11 @@
         <ShellContent
             Title="Home Page"
             ContentTemplate="{DataTemplate pages:HomePage}"
-            Route="HomePage" />
+            Route="HomePage" /> 
+        <ShellContent
+            Title="Booking Page"
+            ContentTemplate="{DataTemplate pages:BookingPage}"
+            Route="BookingPage" />
     </TabBar>
 
 </Shell>

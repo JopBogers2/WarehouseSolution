@@ -18,7 +18,7 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
 
-        builder.Services.AddHttpClient(AppConstants.AuthHttpClientName, httpClient => httpClient.BaseAddress = new Uri("http://dev.auth.hip.fittinq.com"));
+        builder.Services.AddHttpClient(AppConstants.AuthHttpClientName, httpClient => httpClient.BaseAddress = new Uri("http://172.25.80.1:8081"));
 
         builder.Services.AddSingleton<IAuthService, AuthService>();
         builder.Services.AddSingleton<MainPage>();
@@ -27,6 +27,7 @@ public static class MauiProgram
 
         builder.Services.AddTransient<LoginPage>();
         builder.Services.AddTransient<HomePage>();
+        builder.Services.AddTransient<BookingPage>();
 
 
 #if DEBUG
