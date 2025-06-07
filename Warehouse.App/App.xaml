@@ -11,6 +11,8 @@
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <converters:StringNotEmptyConverter x:Key="StringNotEmptyConverter" />
+            <converters:GreaterThanOneConverter x:Key="GreaterThanOneConverter" />
+            <converters:LessThanTotalPagesConverter x:Key="LessThanTotalPagesConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

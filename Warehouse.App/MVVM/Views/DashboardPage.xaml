@@ -3,107 +3,126 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Warehouse.App.MVVM.Views.DashboardPage"
              Title="Dashboard">
-    <VerticalStackLayout >
+    <Grid RowDefinitions="Auto,Auto,*,Auto">
+
         <FlexLayout
-            Direction="Row"
-            Wrap="Wrap"
-            AlignItems="Start"
-          
-            
-            JustifyContent="Start"
-            Margin="0,20,0,10">
+                Grid.Row="0"
+                Direction="Row"
+                Wrap="Wrap"
+                AlignItems="Start"
+                JustifyContent="Start"
+                Margin="0,20,0,10">
 
             <Entry Placeholder="Order ID"
-               Text="{Binding OrderId}"
-               MinimumWidthRequest="150"
-               FlexLayout.Grow="1"
-               Margin="5,0,5,10" />
+                       Text="{Binding OrderId}"
+                       MinimumWidthRequest="150"
+                       FlexLayout.Grow="1"
+                       Margin="5,0,5,10" />
 
             <Entry Placeholder="Distribution Center"
-               Text="{Binding DistributionCenter}"
-               MinimumWidthRequest="150"
-               FlexLayout.Grow="1"
-               Margin="5,0,5,10" />
+                       Text="{Binding DistributionCenter}"
+                       MinimumWidthRequest="150"
+                       FlexLayout.Grow="1"
+                       Margin="5,0,5,10" />
 
             <Entry Placeholder="Platform"
-               Text="{Binding Platform}"
-               MinimumWidthRequest="150"
-               FlexLayout.Grow="1"
-               Margin="5,0,5,10" />
+                       Text="{Binding Platform}"
+                       MinimumWidthRequest="150"
+                       FlexLayout.Grow="1"
+                       Margin="5,0,5,10" />
 
             <Entry Placeholder="Channel"
-               Text="{Binding Channel}"
-               MinimumWidthRequest="150"
-               FlexLayout.Grow="1"
-               Margin="5,0,5,10" />
+                       Text="{Binding Channel}"
+                       MinimumWidthRequest="150"
+                       FlexLayout.Grow="1"
+                       Margin="5,0,5,10" />
 
             <Button Text="Search"
-                Command="{Binding SearchRmasCommand}"
-                MinimumWidthRequest="120"
-                FlexLayout.Grow="1"
-                Margin="5,0,5,10" />
+                        Command="{Binding LoadRmasCommand}"
+                        MinimumWidthRequest="120"
+                        FlexLayout.Grow="1"
+                        Margin="5,0,5,10" />
         </FlexLayout>
-        <VerticalStackLayout Padding="10" Spacing="10">
+
+        <VerticalStackLayout Grid.Row="1" Padding="10" Spacing="10">
             <Border Stroke="Gray" Padding="10" Margin="0,0,0,10">
-                <Label Text="{Binding RmaCount, StringFormat='Total RMAs: {0}'}" FontSize="18" HorizontalOptions="Center" />
+                <Label Text="{Binding TotalCount, StringFormat='Total RMAs: {0}'}"
+                           FontSize="18"
+                           HorizontalOptions="Center" />
             </Border>
-
             <ActivityIndicator IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}" />
-
-            <Label Text="{Binding ErrorMessage}" TextColor="Red" IsVisible="{Binding ErrorMessage, Converter={StaticResource StringNotEmptyConverter}}" />
-
-            <CollectionView ItemsSource="{Binding Rmas}"
-                Margin="0,10,0,0"
-                SelectionMode="Single">
-                <CollectionView.ItemsLayout>
-                    <GridItemsLayout Orientation="Vertical" Span="1" VerticalItemSpacing="10" />
-                </CollectionView.ItemsLayout>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Border Padding="16"
-                        Stroke="Gray">
-                            <Grid ColumnDefinitions="*,Auto"
-                            RowDefinitions="Auto,Auto,Auto,Auto"
-                            ColumnSpacing="12"
-                            RowSpacing="4">
-
-                                <Label Text="{Binding OrderId}"
-                               FontAttributes="Bold"
-                               FontSize="18"
-                               TextColor="{StaticResource Primary}"
-                               Grid.Column="0"
-                               Grid.Row="0" />
-
-                                <Label Text="{Binding Platform}"
-                               FontSize="14"
-                               TextColor="Gray"
-                               Grid.Column="0"
-                               Grid.Row="1" />
-
-                                <Label Text="{Binding Channel}"
-                               FontSize="14"
-                               TextColor="Gray"
-                               Grid.Column="0"
-                               Grid.Row="2" />
-
-                                <Label Text="{Binding DistributionCenter}"
-                               FontSize="14"
-                               TextColor="Gray"
-                               Grid.Column="0"
-                               Grid.Row="3" />
-
-                                <Button Text="Details"
-                                Style="{StaticResource OutlineButtonStyle}"
-                                Grid.Column="1"
-                                Grid.Row="0"
-                                Grid.RowSpan="4"
-                                VerticalOptions="Center"
-                                />
-                            </Grid>
-                        </Border>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+            <Label Text="{Binding ErrorMessage}"
+                       TextColor="Red"
+                       IsVisible="{Binding ErrorMessage, Converter={StaticResource StringNotEmptyConverter}}" />
         </VerticalStackLayout>
-    </VerticalStackLayout>
+
+        <CollectionView Grid.Row="2"
+                            ItemsSource="{Binding Rmas}"
+                            Margin="10,10,10,10"
+                            SelectionMode="Single">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" Span="1" VerticalItemSpacing="10" />
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border Padding="16" Stroke="Gray">
+                        <Grid ColumnDefinitions="*,Auto"
+                                  RowDefinitions="Auto,Auto,Auto,Auto"
+                                  ColumnSpacing="12"
+                                  RowSpacing="4">
+
+                            <Label Text="{Binding OrderId}"
+                                       FontAttributes="Bold"
+                                       FontSize="18"
+                                       TextColor="{StaticResource Primary}"
+                                       Grid.Column="0"
+                                       Grid.Row="0" />
+
+                            <Label Text="{Binding Platform}"
+                                       FontSize="14"
+                                       TextColor="Gray"
+                                       Grid.Column="0"
+                                       Grid.Row="1" />
+
+                            <Label Text="{Binding Channel}"
+                                       FontSize="14"
+                                       TextColor="Gray"
+                                       Grid.Column="0"
+                                       Grid.Row="2" />
+
+                            <Label Text="{Binding DistributionCenter}"
+                                       FontSize="14"
+                                       TextColor="Gray"
+                                       Grid.Column="0"
+                                       Grid.Row="3" />
+
+                            <Button Text="Details"
+                                        Style="{StaticResource OutlineButtonStyle}"
+                                        Grid.Column="1"
+                                        Grid.Row="0"
+                                        Grid.RowSpan="4"
+                                        VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <HorizontalStackLayout Grid.Row="3" HorizontalOptions="Center" Spacing="10" Margin="0,10,0,20">
+            <Button Text="Previous"
+                    Command="{Binding PreviousPageCommand}"
+                    IsEnabled="{Binding PageNumber, Converter={StaticResource GreaterThanOneConverter}}" />
+            <Label Text="{Binding PageNumber, StringFormat='Page {0}'}" VerticalOptions="Center" />
+            <Label Text="{Binding TotalPages, StringFormat='of {0}'}" VerticalOptions="Center" />
+            <Button Text="Next"
+                    Command="{Binding NextPageCommand}">
+                    <Button.IsEnabled>
+                        <MultiBinding Converter="{StaticResource LessThanTotalPagesConverter}">
+                            <Binding Path="PageNumber" />
+                            <Binding Path="TotalPages" />
+                        </MultiBinding>
+                    </Button.IsEnabled>
+            </Button>
+        </HorizontalStackLayout>
+    </Grid>
 </ContentPage>

@@ -8,11 +8,13 @@ namespace Warehouse.App.MVVM.Services
     public interface IApiService
     {
         Task<ApiResult<List<ReturnMerchandiseAuthorizationDto>>> GetAllRmasAsync();
-        Task<ApiResult<List<ReturnMerchandiseAuthorizationDto>>> SearchRmasAsync(
+        Task<ApiResult<PagedResult<ReturnMerchandiseAuthorizationDto>>> SearchRmasAsync(
             string? orderId = null,
             string? distributionCenter = null,
             string? platform = null,
-            string? channel = null);
+            string? channel = null,
+            int pageNumber = 1,
+            int pageSize = 20);
         Task<ApiResult<ReturnMerchandiseAuthorizationDto>> GetRmaByTrackAndTraceAsync(string code);
     }
     public class ApiService : IApiService
@@ -30,19 +32,23 @@ namespace Warehouse.App.MVVM.Services
         public Task<ApiResult<List<ReturnMerchandiseAuthorizationDto>>> GetAllRmasAsync()
             => GetAsync<List<ReturnMerchandiseAuthorizationDto>>("api/app/returnMerchandiseAuthorizations");
 
-        public Task<ApiResult<List<ReturnMerchandiseAuthorizationDto>>> SearchRmasAsync(
+        public Task<ApiResult<PagedResult<ReturnMerchandiseAuthorizationDto>>> SearchRmasAsync(
             string? orderId = null,
             string? distributionCenter = null,
             string? platform = null,
-            string? channel = null)
+            string? channel = null,
+            int pageNumber = 1,
+            int pageSize = 20)
         {
             var query = new List<string>();
             if (!string.IsNullOrWhiteSpace(orderId)) query.Add($"orderId={Uri.EscapeDataString(orderId)}");
             if (!string.IsNullOrWhiteSpace(distributionCenter)) query.Add($"distributionCenter={Uri.EscapeDataString(distributionCenter)}");
             if (!string.IsNullOrWhiteSpace(platform)) query.Add($"platform={Uri.EscapeDataString(platform)}");
             if (!string.IsNullOrWhiteSpace(channel)) query.Add($"channel={Uri.EscapeDataString(channel)}");
+            query.Add($"pageNumber={pageNumber}");
+            query.Add($"pageSize={pageSize}");
             var queryString = query.Count > 0 ? "?" + string.Join("&", query) : string.Empty;
-            return GetAsync<List<ReturnMerchandiseAuthorizationDto>>($"api/app/returnMerchandiseAuthorizations/search{queryString}");
+            return GetAsync<PagedResult<ReturnMerchandiseAuthorizationDto>>($"api/app/returnMerchandiseAuthorizations/search{queryString}");
         }
 
 

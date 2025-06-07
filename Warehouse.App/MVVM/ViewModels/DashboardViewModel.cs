@@ -34,6 +34,18 @@ namespace Warehouse.App.MVVM.ViewModels
         [ObservableProperty]
         private int _rmaCount;
 
+        [ObservableProperty]
+        private int _pageNumber = 1;
+
+        [ObservableProperty]
+        private int _pageSize = 20;
+
+        [ObservableProperty]
+        private int _totalCount;
+
+        [ObservableProperty]
+        private int _totalPages;
+
         public DashboardViewModel(IApiService apiService)
         {
             this.apiService = apiService;
@@ -43,31 +55,57 @@ namespace Warehouse.App.MVVM.ViewModels
         [RelayCommand]
         private async Task LoadRmasAsync()
         {
-            await SearchRmasAsync();
+            PageNumber = 1;
+            await GetRmasAsync();
         }
 
+
         [RelayCommand]
-        private async Task SearchRmasAsync()
+        private async Task GetRmasAsync()
         {
             try
             {
                 IsLoading = true;
                 ErrorMessage = null;
-                var result = await apiService.SearchRmasAsync(OrderId, DistributionCenter, Platform, Channel);
+                var result = await apiService.SearchRmasAsync(OrderId, DistributionCenter, Platform, Channel, PageNumber, PageSize);
                 if (result.IsSuccess && result.Data != null)
                 {
-                    Rmas = new ObservableCollection<ReturnMerchandiseAuthorizationDto>(result.Data);
-                    RmaCount = Rmas.Count;
+                    Rmas = new ObservableCollection<ReturnMerchandiseAuthorizationDto>(result.Data.Items);
+                    RmaCount = result.Data.Items.Count;
+                    TotalCount = result.Data.TotalCount;
+                    TotalPages = (int)Math.Ceiling((double)TotalCount / PageSize);
                 }
                 else
                 {
                     ErrorMessage = result.ErrorMessage ?? "Failed to load RMAs.";
                     RmaCount = 0;
+                    TotalCount = 0;
+                    TotalPages = 1;
                 }
             }
             finally
             {
                 IsLoading = false;
+            }
+        }
+
+        [RelayCommand]
+        private async Task NextPageAsync()
+        {
+            if (PageNumber < TotalPages)
+            {
+                PageNumber++;
+                await GetRmasAsync();
+            }
+        }
+
+        [RelayCommand]
+        private async Task PreviousPageAsync()
+        {
+            if (PageNumber > 1)
+            {
+                PageNumber--;
+                await GetRmasAsync();
             }
         }
     }

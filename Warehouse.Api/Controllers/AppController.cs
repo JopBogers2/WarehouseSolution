@@ -47,11 +47,13 @@ namespace Warehouse.Api.Controllers
         }
 
         [HttpGet("returnMerchandiseAuthorizations/search")]
-        public async Task<ActionResult<IEnumerable<ReturnMerchandiseAuthorizationDto>>> SearchRmas(
+        public async Task<ActionResult<PagedResult<ReturnMerchandiseAuthorizationDto>>> SearchRmas(
             [FromQuery] string? orderId,
             [FromQuery] string? distributionCenter,
             [FromQuery] string? platform,
-            [FromQuery] string? channel)
+            [FromQuery] string? channel,
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 20)
         {
             var query = _context.ReturnMerchandiseAuthorization
                 .Include(r => r.Lines)
@@ -67,7 +69,12 @@ namespace Warehouse.Api.Controllers
             if (!string.IsNullOrWhiteSpace(channel))
                 query = query.Where(r => r.Channel.Contains(channel));
 
+            var totalCount = await query.CountAsync();
+
             var rmas = await query
+                .OrderByDescending(r => r.ReturnRequestId)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
                 .Select(r => new ReturnMerchandiseAuthorizationDto
                 {
                     Platform = r.Platform,
@@ -87,7 +94,13 @@ namespace Warehouse.Api.Controllers
                 })
                 .ToListAsync();
 
-            return Ok(rmas);
+            return Ok(new PagedResult<ReturnMerchandiseAuthorizationDto>
+            {
+                Items = rmas,
+                TotalCount = totalCount,
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            });
         }
 
 
