@@ -64,7 +64,7 @@ namespace Warehouse.App.MVVM.ViewModels
             Loading = false;
             if (string.IsNullOrWhiteSpace(error))
             {
-                await Shell.Current.GoToAsync($"//{nameof(HomePage)}");
+                await Shell.Current.GoToAsync($"//{nameof(DashboardPage)}");
                 return;
             }
 

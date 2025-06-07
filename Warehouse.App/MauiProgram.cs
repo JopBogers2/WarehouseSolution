@@ -19,7 +19,8 @@ public static class MauiProgram
             });
 
         builder.Services.AddHttpClient(AppConstants.AuthHttpClientName, httpClient => httpClient.BaseAddress = new Uri("http://172.25.80.1:8081"));
-        builder.Services.AddHttpClient(AppConstants.ApiClientName, httpClient => httpClient.BaseAddress = new Uri("http://localhost:5014"));
+        builder.Services.AddHttpClient(AppConstants.ApiClientName, httpClient =>
+            httpClient.BaseAddress = new Uri(DeviceInfo.Platform == DevicePlatform.Android ? "http://10.0.2.2:5014" : "http://localhost:5014"));
 
         builder.Services.AddSingleton<IAuthService, AuthService>();
         builder.Services.AddSingleton<IApiService, ApiService>();
@@ -27,9 +28,10 @@ public static class MauiProgram
         builder.Services.AddSingleton<MainPage>();
 
         builder.Services.AddTransient<LoginViewModel>();
+        builder.Services.AddTransient<DashboardViewModel>();
 
         builder.Services.AddTransient<LoginPage>();
-        builder.Services.AddTransient<HomePage>();
+        builder.Services.AddTransient<DashboardPage>();
         builder.Services.AddTransient<BookingPage>();
 
 

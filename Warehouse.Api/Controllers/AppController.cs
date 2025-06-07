@@ -46,6 +46,51 @@ namespace Warehouse.Api.Controllers
             return Ok(rmas);
         }
 
+        [HttpGet("returnMerchandiseAuthorizations/search")]
+        public async Task<ActionResult<IEnumerable<ReturnMerchandiseAuthorizationDto>>> SearchRmas(
+            [FromQuery] string? orderId,
+            [FromQuery] string? distributionCenter,
+            [FromQuery] string? platform,
+            [FromQuery] string? channel)
+        {
+            var query = _context.ReturnMerchandiseAuthorization
+                .Include(r => r.Lines)
+                .Include(r => r.TrackAndTraces)
+                .AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(orderId))
+                query = query.Where(r => r.OrderId.Contains(orderId));
+            if (!string.IsNullOrWhiteSpace(distributionCenter))
+                query = query.Where(r => r.DistributionCenter.Contains(distributionCenter));
+            if (!string.IsNullOrWhiteSpace(platform))
+                query = query.Where(r => r.Platform.Contains(platform));
+            if (!string.IsNullOrWhiteSpace(channel))
+                query = query.Where(r => r.Channel.Contains(channel));
+
+            var rmas = await query
+                .Select(r => new ReturnMerchandiseAuthorizationDto
+                {
+                    Platform = r.Platform,
+                    Channel = r.Channel,
+                    OrderId = r.OrderId,
+                    ReturnRequestId = r.ReturnRequestId,
+                    DistributionCenter = r.DistributionCenter,
+                    Currency = r.Currency,
+                    TrackAndTrace = r.TrackAndTraces.Select(t => t.TrackAndTraceCode).ToList(),
+                    Lines = r.Lines.Select(l => new ReturnMerchandiseAuthorizationLineDto
+                    {
+                        LineId = l.LineId,
+                        ArticleCode = l.ArticleCode,
+                        Quantity = l.Quantity,
+                        Reason = l.Reason
+                    }).ToList()
+                })
+                .ToListAsync();
+
+            return Ok(rmas);
+        }
+
+
         [HttpGet("returnMerchandiseAuthorization/byTrackAndTrace/{code}")]
         public async Task<ActionResult<ReturnMerchandiseAuthorizationDto>> GetRmaByTrackAndTrace(string code)
         {

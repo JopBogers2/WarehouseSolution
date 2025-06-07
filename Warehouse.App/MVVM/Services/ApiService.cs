@@ -8,6 +8,11 @@ namespace Warehouse.App.MVVM.Services
     public interface IApiService
     {
         Task<ApiResult<List<ReturnMerchandiseAuthorizationDto>>> GetAllRmasAsync();
+        Task<ApiResult<List<ReturnMerchandiseAuthorizationDto>>> SearchRmasAsync(
+            string? orderId = null,
+            string? distributionCenter = null,
+            string? platform = null,
+            string? channel = null);
         Task<ApiResult<ReturnMerchandiseAuthorizationDto>> GetRmaByTrackAndTraceAsync(string code);
     }
     public class ApiService : IApiService
@@ -24,6 +29,22 @@ namespace Warehouse.App.MVVM.Services
 
         public Task<ApiResult<List<ReturnMerchandiseAuthorizationDto>>> GetAllRmasAsync()
             => GetAsync<List<ReturnMerchandiseAuthorizationDto>>("api/app/returnMerchandiseAuthorizations");
+
+        public Task<ApiResult<List<ReturnMerchandiseAuthorizationDto>>> SearchRmasAsync(
+            string? orderId = null,
+            string? distributionCenter = null,
+            string? platform = null,
+            string? channel = null)
+        {
+            var query = new List<string>();
+            if (!string.IsNullOrWhiteSpace(orderId)) query.Add($"orderId={Uri.EscapeDataString(orderId)}");
+            if (!string.IsNullOrWhiteSpace(distributionCenter)) query.Add($"distributionCenter={Uri.EscapeDataString(distributionCenter)}");
+            if (!string.IsNullOrWhiteSpace(platform)) query.Add($"platform={Uri.EscapeDataString(platform)}");
+            if (!string.IsNullOrWhiteSpace(channel)) query.Add($"channel={Uri.EscapeDataString(channel)}");
+            var queryString = query.Count > 0 ? "?" + string.Join("&", query) : string.Empty;
+            return GetAsync<List<ReturnMerchandiseAuthorizationDto>>($"api/app/returnMerchandiseAuthorizations/search{queryString}");
+        }
+
 
         public Task<ApiResult<ReturnMerchandiseAuthorizationDto>> GetRmaByTrackAndTraceAsync(string code)
             => GetAsync<ReturnMerchandiseAuthorizationDto>($"api/app/returnMerchandiseAuthorization/byTrackAndTrace/{code}");

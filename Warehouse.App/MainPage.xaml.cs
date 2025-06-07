@@ -20,7 +20,7 @@ namespace Warehouse.App
             await Task.Delay(1);
             if (await _authService.IsUserAuthenticated())
             {
-                await Shell.Current.GoToAsync($"//{nameof(HomePage)}");
+                await Shell.Current.GoToAsync($"//{nameof(DashboardPage)}");
             }
             else
             {
