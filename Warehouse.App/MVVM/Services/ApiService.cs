@@ -13,6 +13,7 @@ namespace Warehouse.App.MVVM.Services
             string? distributionCenter = null,
             string? platform = null,
             string? channel = null,
+            string? trackAndTrace = null,
             int pageNumber = 1,
             int pageSize = 20);
         Task<ApiResult<ReturnMerchandiseAuthorizationDto>> GetRmaByTrackAndTraceAsync(string code);
@@ -37,6 +38,7 @@ namespace Warehouse.App.MVVM.Services
             string? distributionCenter = null,
             string? platform = null,
             string? channel = null,
+            string? trackAndTrace = null,
             int pageNumber = 1,
             int pageSize = 20)
         {
@@ -45,6 +47,7 @@ namespace Warehouse.App.MVVM.Services
             if (!string.IsNullOrWhiteSpace(distributionCenter)) query.Add($"distributionCenter={Uri.EscapeDataString(distributionCenter)}");
             if (!string.IsNullOrWhiteSpace(platform)) query.Add($"platform={Uri.EscapeDataString(platform)}");
             if (!string.IsNullOrWhiteSpace(channel)) query.Add($"channel={Uri.EscapeDataString(channel)}");
+            if (!string.IsNullOrWhiteSpace(trackAndTrace)) query.Add($"trackAndTrace={Uri.EscapeDataString(trackAndTrace)}");
             query.Add($"pageNumber={pageNumber}");
             query.Add($"pageSize={pageSize}");
             var queryString = query.Count > 0 ? "?" + string.Join("&", query) : string.Empty;

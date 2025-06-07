@@ -52,6 +52,7 @@ namespace Warehouse.Api.Controllers
             [FromQuery] string? distributionCenter,
             [FromQuery] string? platform,
             [FromQuery] string? channel,
+            [FromQuery] string? trackAndTrace,
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 20)
         {
@@ -68,6 +69,8 @@ namespace Warehouse.Api.Controllers
                 query = query.Where(r => r.Platform.Contains(platform));
             if (!string.IsNullOrWhiteSpace(channel))
                 query = query.Where(r => r.Channel.Contains(channel));
+            if (!string.IsNullOrWhiteSpace(trackAndTrace))
+                query = query.Where(r => r.TrackAndTraces.Any(t => t.TrackAndTraceCode == trackAndTrace));
 
             var totalCount = await query.CountAsync();
 

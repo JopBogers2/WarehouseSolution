@@ -36,10 +36,16 @@
                        MinimumWidthRequest="150"
                        FlexLayout.Grow="1"
                        Margin="5,0,5,10" />
+            
+            <Entry Placeholder="Track And Trace"
+                       Text="{Binding TrackAndTrace}"
+                       MinimumWidthRequest="150"
+                       FlexLayout.Grow="1"
+                       Margin="5,0,5,10" />
 
             <Button Text="Search"
                         Command="{Binding LoadRmasCommand}"
-                        MinimumWidthRequest="120"
+                        MinimumWidthRequest="100"
                         FlexLayout.Grow="1"
                         Margin="5,0,5,10" />
         </FlexLayout>

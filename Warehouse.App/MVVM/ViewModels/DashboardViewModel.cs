@@ -32,6 +32,9 @@ namespace Warehouse.App.MVVM.ViewModels
         private string? _channel;
 
         [ObservableProperty]
+        private string? _trackAndTrace;
+
+        [ObservableProperty]
         private int _rmaCount;
 
         [ObservableProperty]
@@ -67,7 +70,7 @@ namespace Warehouse.App.MVVM.ViewModels
             {
                 IsLoading = true;
                 ErrorMessage = null;
-                var result = await apiService.SearchRmasAsync(OrderId, DistributionCenter, Platform, Channel, PageNumber, PageSize);
+                var result = await apiService.SearchRmasAsync(OrderId, DistributionCenter, Platform, Channel, TrackAndTrace, PageNumber, PageSize);
                 if (result.IsSuccess && result.Data != null)
                 {
                     Rmas = new ObservableCollection<ReturnMerchandiseAuthorizationDto>(result.Data.Items);
