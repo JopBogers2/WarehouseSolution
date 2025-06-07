@@ -2,6 +2,7 @@
 using Warehouse.App.MVVM.Services;
 using Warehouse.App.MVVM.ViewModels;
 using Warehouse.App.MVVM.Views;
+using ZXing.Net.Maui.Controls;
 
 namespace Warehouse.App;
 
@@ -12,6 +13,7 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
+            .UseBarcodeReader()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -29,10 +31,12 @@ public static class MauiProgram
 
         builder.Services.AddTransient<LoginViewModel>();
         builder.Services.AddTransient<DashboardViewModel>();
+        builder.Services.AddTransient<BookingViewModel>();
 
         builder.Services.AddTransient<LoginPage>();
         builder.Services.AddTransient<DashboardPage>();
         builder.Services.AddTransient<BookingPage>();
+        builder.Services.AddTransient<ScanPage>();
 
 
 #if DEBUG

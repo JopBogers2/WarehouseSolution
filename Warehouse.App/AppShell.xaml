@@ -7,7 +7,6 @@
     xmlns:pages="clr-namespace:Warehouse.App.MVVM.Views"
     Shell.FlyoutBehavior="Disabled"
 >
-
     <ShellContent
         Title="Main"
         ContentTemplate="{DataTemplate local:MainPage}"
@@ -16,6 +15,11 @@
     <ShellContent
         ContentTemplate="{DataTemplate pages:LoginPage}"
         Route="LoginPage" />
+
+    <ShellContent
+        Title="Scan"
+        ContentTemplate="{DataTemplate pages:ScanPage}"
+        Route="ScanPage" />
 
     <TabBar>
         <ShellContent

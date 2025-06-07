@@ -1,0 +1,19 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:zxing="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.MAUI.Controls"
+             x:Class="Warehouse.App.MVVM.Views.ScanPage"
+             Title="ScanPage">
+    <Grid RowDefinitions="Auto,Auto" Margin="20" Padding="10">
+        <Label Grid.Row="1"
+            Text="Scan a barcode"
+            FontSize="20"
+            Margin="0,0,0,20"
+            HorizontalOptions="Center" />
+
+        <zxing:CameraBarcodeReaderView 
+            Grid.Row="2"
+            x:Name="BarcodeReader"
+            HeightRequest="100"
+            BarcodesDetected="BarcodesDetected" />
+    </Grid>
+</ContentPage>

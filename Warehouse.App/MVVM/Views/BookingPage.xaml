@@ -4,9 +4,7 @@
              x:Class="Warehouse.App.MVVM.Views.BookingPage"
              Title="BookingPage">
     <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+        <Button Text="Scan"
+                Command="{Binding ScanCommand}"/>
     </VerticalStackLayout>
 </ContentPage>
