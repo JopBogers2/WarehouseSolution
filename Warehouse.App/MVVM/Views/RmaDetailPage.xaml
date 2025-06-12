@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Warehouse.App.MVVM.Views.RmaDetailPage"
+             x:Name="RmaDetailPageRoot"
              Title="RMA Detail">
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="16">
@@ -38,7 +39,7 @@
             </Border>
 
             <Label Text="Lines" FontSize="18" FontAttributes="Bold" Margin="8,10,0,0"/>
-            <Grid ColumnDefinitions="100,*,*,*,*,*" Padding="8,0,8,0">
+            <Grid ColumnDefinitions="100,*,*,*,*,*,50" Padding="8,0,8,0">
                 <Label Text="Line ID" FontAttributes="Bold" />
                 <Label Text="Article Code" FontAttributes="Bold" Grid.Column="1"/>
                 <Label Text="Quantity" FontAttributes="Bold" Grid.Column="2"/>
@@ -52,28 +53,28 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Border Stroke="Gray" Padding="8">
-                            <Grid ColumnDefinitions="100,*,*,*,*,*">
+                            <Grid ColumnDefinitions="100,*,*,*,*,*,50">
                                 <Label VerticalTextAlignment="Center" Text="{Binding LineId}" />
                                 <Label VerticalTextAlignment="Center" Text="{Binding ArticleCode}" Grid.Column="1"/>
                                 <HorizontalStackLayout Grid.Column="2" HorizontalOptions="Start" Spacing="4">
                                     <Button Text="-" 
-                                       Command="{Binding DecrementQuantityCommand}" 
-                                       WidthRequest="32" HeightRequest="32"/>
-                                                <Label Text="{Binding Quantity}" 
-                                      WidthRequest="40"
-                                      HorizontalTextAlignment="Center"
-                                      VerticalTextAlignment="Center"
-                                      FontSize="16"/>
-                                                <Button Text="+" 
-                                       Command="{Binding IncrementQuantityCommand}" 
-                                       WidthRequest="32" HeightRequest="32"/>
-                                            </HorizontalStackLayout>
+                                            Command="{Binding DecrementQuantityCommand}" 
+                                            WidthRequest="32" HeightRequest="32"/>
+                                    <Label Text="{Binding Quantity}" 
+                                            WidthRequest="40"
+                                            HorizontalTextAlignment="Center"
+                                            VerticalTextAlignment="Center"
+                                            FontSize="16"/>
+                                    <Button Text="+"
+                                            Command="{Binding IncrementQuantityCommand}" 
+                                            WidthRequest="32" HeightRequest="32"/>
+                                </HorizontalStackLayout>
                                 <Label VerticalTextAlignment="Center" Text="{Binding Reason}" Grid.Column="3"/>
                                 <Picker Grid.Column="4"
-                                    SelectedItem="{Binding Resolution, Mode=TwoWay}"
-                                    VerticalOptions="Center"
-                                    WidthRequest="200"
-                                    HorizontalOptions="Start">
+                                        SelectedItem="{Binding Resolution, Mode=TwoWay}"
+                                        VerticalOptions="Center"
+                                        WidthRequest="200"
+                                        HorizontalOptions="Start">
                                     <Picker.Items>
                                         <x:String>refund</x:String>
                                         <x:String>doNotRefund</x:String>
@@ -81,22 +82,37 @@
                                     </Picker.Items>
                                 </Picker>
                                 <Picker Grid.Column="5"
-                                    SelectedItem="{Binding Condition, Mode=TwoWay}"
-                                    VerticalOptions="Center"
-                                    WidthRequest="200"
-                                    HorizontalOptions="Start">
+                                        SelectedItem="{Binding Condition, Mode=TwoWay}"
+                                        VerticalOptions="Center"
+                                        WidthRequest="200"
+                                        HorizontalOptions="Start">
                                     <Picker.Items>
                                         <x:String>secondChange</x:String>
                                         <x:String>restockable</x:String>
                                         <x:String>scrap</x:String>
                                     </Picker.Items>
                                 </Picker>
+                                <Button Grid.Column="6"
+                                        Text="Delete"
+                                        Command="{Binding BindingContext.DeleteLineCommand, Source={x:Reference RmaDetailPageRoot}}"
+                                        CommandParameter="{Binding .}"
+                                        BackgroundColor="Red"
+                                        TextColor="White"
+                                        WidthRequest="70"
+                                        HeightRequest="32"
+                                        HorizontalOptions="End"
+                                        VerticalOptions="Center"/>
                             </Grid>
                         </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
+            <Button 
+                Text="Add Line"
+                Command="{Binding AddLineCommand}"
+                HorizontalOptions="End"
+                Margin="0,0,0,10"/>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

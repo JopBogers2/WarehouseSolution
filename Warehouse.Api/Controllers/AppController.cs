@@ -21,7 +21,7 @@ namespace Warehouse.Api.Controllers
         [HttpGet("returnMerchandiseAuthorizations")]
         public async Task<ActionResult<IEnumerable<ReturnMerchandiseAuthorizationDto>>> GetAllRmas()
         {
-            var rmas = await _context.ReturnMerchandiseAuthorization
+            var rmas = await _context.ReturnMerchandiseAuthorizations
                 .Include(r => r.Lines)
                 .Include(r => r.TrackAndTraces)
                 .Select(r => new ReturnMerchandiseAuthorizationDto
@@ -57,7 +57,7 @@ namespace Warehouse.Api.Controllers
             [FromQuery] int pageNumber = 1,
             [FromQuery] int pageSize = 20)
         {
-            var query = _context.ReturnMerchandiseAuthorization
+            var query = _context.ReturnMerchandiseAuthorizations
                 .Include(r => r.Lines)
                 .Include(r => r.TrackAndTraces)
                 .AsQueryable();
@@ -112,7 +112,7 @@ namespace Warehouse.Api.Controllers
         [HttpGet("returnMerchandiseAuthorization/byTrackAndTrace/{code}")]
         public async Task<ActionResult<ReturnMerchandiseAuthorizationDto>> GetRmaByTrackAndTrace(string code)
         {
-            var rma = await _context.ReturnMerchandiseAuthorization
+            var rma = await _context.ReturnMerchandiseAuthorizations
                 .Include(r => r.Lines)
                 .Include(r => r.TrackAndTraces)
                 .Where(r => r.TrackAndTraces.Any(t => t.TrackAndTraceCode == code))

@@ -18,6 +18,6 @@
         public required string ArticleCode { get; set; }
         public required int Quantity { get; set; }
         public required string Reason { get; set; }
-        public required string Resolution { get; set; }
+        public string? Resolution { get; set; }
     }
 }

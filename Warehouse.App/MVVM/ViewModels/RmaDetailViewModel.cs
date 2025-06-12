@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Warehouse.App.MVVM.Services;
-using Warehouse.App.MVVM.Views;
 using Warehouse.Shared.Models;
 
 namespace Warehouse.App.MVVM.ViewModels
@@ -29,10 +28,10 @@ namespace Warehouse.App.MVVM.ViewModels
         }
 
         [RelayCommand]
-        private async Task Scan()
+        private void DeleteLine(RmaDetailLineViewModel line)
         {
-            var scanPage = _serviceProvider.GetRequiredService<ScanPage>();
-            await Shell.Current.Navigation.PushAsync(scanPage);
+            if (line != null)
+                Lines.Remove(line);
         }
     }
 }

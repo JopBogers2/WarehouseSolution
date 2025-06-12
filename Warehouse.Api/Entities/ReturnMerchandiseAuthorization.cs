@@ -11,5 +11,6 @@
         public string Currency { get; set; } = string.Empty;
         public ICollection<TrackAndTrace> TrackAndTraces { get; set; } = new List<TrackAndTrace>();
         public ICollection<ReturnMerchandiseAuthorizationLine> Lines { get; set; } = new List<ReturnMerchandiseAuthorizationLine>();
+        public ICollection<Fulfillment> Fulfillments { get; set; } = new List<Fulfillment>();
     }
 }
