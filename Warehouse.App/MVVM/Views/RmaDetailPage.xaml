@@ -2,11 +2,101 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Warehouse.App.MVVM.Views.RmaDetailPage"
-             Title="RmaDetailPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="RMA Detail">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="16">
+            <Label Text="Order" FontSize="18" FontAttributes="Bold" Margin="8,10,0,0"/>
+            <Border Stroke="Gray" Padding="16" Margin="0,0,0,10">
+                <Grid ColumnDefinitions="Auto,Auto,100,Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="8" ColumnSpacing="18">
+                    <Label Text="Platform:" FontAttributes="Bold" Grid.Row="0" Grid.Column="0"/>
+                    <Label Text="{Binding ReturnMerchandiseAuthorization.Platform}" Grid.Row="0" Grid.Column="1"/>
+
+                    <Label Text="Channel:" FontAttributes="Bold" Grid.Row="0" Grid.Column="3"/>
+                    <Label Text="{Binding ReturnMerchandiseAuthorization.Channel}" Grid.Row="0" Grid.Column="4"/>
+                    
+                    <Label Text="Order ID:" FontAttributes="Bold" Grid.Row="1" Grid.Column="0"/>
+                    <Label Text="{Binding ReturnMerchandiseAuthorization.OrderId}" Grid.Row="1" Grid.Column="1"/>
+
+                    <Label Text="Return Request ID:" FontAttributes="Bold" Grid.Row="1" Grid.Column="3"/>
+                    <Label Text="{Binding ReturnMerchandiseAuthorization.ReturnRequestId}" Grid.Row="1" Grid.Column="4"/>
+
+                    <Label Text="Distribution Center:" FontAttributes="Bold" Grid.Row="2" Grid.Column="0"/>
+                    <Label Text="{Binding ReturnMerchandiseAuthorization.DistributionCenter}" Grid.Row="2" Grid.Column="1"/>
+
+                    <Label Text="Currency:" FontAttributes="Bold" Grid.Row="2" Grid.Column="3"/>
+                    <Label Text="{Binding ReturnMerchandiseAuthorization.Currency}" Grid.Row="2" Grid.Column="4"/>
+
+                    <Label Text="Track And Trace:" FontAttributes="Bold" Grid.Row="3" Grid.Column="0"/>
+                    <CollectionView Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="4" ItemsSource="{Binding ReturnMerchandiseAuthorization.TrackAndTrace}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Label Text="{Binding}" />
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Grid>
+            </Border>
+
+            <Label Text="Lines" FontSize="18" FontAttributes="Bold" Margin="8,10,0,0"/>
+            <Grid ColumnDefinitions="100,*,*,*,*,*" Padding="8,0,8,0">
+                <Label Text="Line ID" FontAttributes="Bold" />
+                <Label Text="Article Code" FontAttributes="Bold" Grid.Column="1"/>
+                <Label Text="Quantity" FontAttributes="Bold" Grid.Column="2"/>
+                <Label Text="Reason" FontAttributes="Bold" Grid.Column="3"/>
+                <Label Text="Resolution" FontAttributes="Bold" Grid.Column="4"/>
+                <Label Text="Condition" FontAttributes="Bold" Grid.Column="5"/>
+            </Grid>
+
+            <!-- Table Rows -->
+            <CollectionView ItemsSource="{Binding Lines}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Stroke="Gray" Padding="8">
+                            <Grid ColumnDefinitions="100,*,*,*,*,*">
+                                <Label VerticalTextAlignment="Center" Text="{Binding LineId}" />
+                                <Label VerticalTextAlignment="Center" Text="{Binding ArticleCode}" Grid.Column="1"/>
+                                <HorizontalStackLayout Grid.Column="2" HorizontalOptions="Start" Spacing="4">
+                                    <Button Text="-" 
+                                       Command="{Binding DecrementQuantityCommand}" 
+                                       WidthRequest="32" HeightRequest="32"/>
+                                                <Label Text="{Binding Quantity}" 
+                                      WidthRequest="40"
+                                      HorizontalTextAlignment="Center"
+                                      VerticalTextAlignment="Center"
+                                      FontSize="16"/>
+                                                <Button Text="+" 
+                                       Command="{Binding IncrementQuantityCommand}" 
+                                       WidthRequest="32" HeightRequest="32"/>
+                                            </HorizontalStackLayout>
+                                <Label VerticalTextAlignment="Center" Text="{Binding Reason}" Grid.Column="3"/>
+                                <Picker Grid.Column="4"
+                                    SelectedItem="{Binding Resolution, Mode=TwoWay}"
+                                    VerticalOptions="Center"
+                                    WidthRequest="200"
+                                    HorizontalOptions="Start">
+                                    <Picker.Items>
+                                        <x:String>refund</x:String>
+                                        <x:String>doNotRefund</x:String>
+                                        <x:String>check</x:String>
+                                    </Picker.Items>
+                                </Picker>
+                                <Picker Grid.Column="5"
+                                    SelectedItem="{Binding Condition, Mode=TwoWay}"
+                                    VerticalOptions="Center"
+                                    WidthRequest="200"
+                                    HorizontalOptions="Start">
+                                    <Picker.Items>
+                                        <x:String>secondChange</x:String>
+                                        <x:String>restockable</x:String>
+                                        <x:String>scrap</x:String>
+                                    </Picker.Items>
+                                </Picker>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

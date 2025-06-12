@@ -38,7 +38,8 @@ namespace Warehouse.Api.Controllers
                         LineId = l.LineId,
                         ArticleCode = l.ArticleCode,
                         Quantity = l.Quantity,
-                        Reason = l.Reason
+                        Reason = l.Reason,
+                        Resolution = l.Resolution
                     }).ToList()
                 })
                 .ToListAsync();
@@ -92,7 +93,8 @@ namespace Warehouse.Api.Controllers
                         LineId = l.LineId,
                         ArticleCode = l.ArticleCode,
                         Quantity = l.Quantity,
-                        Reason = l.Reason
+                        Reason = l.Reason,
+                        Resolution = l.Resolution
                     }).ToList()
                 })
                 .ToListAsync();
@@ -128,7 +130,8 @@ namespace Warehouse.Api.Controllers
                         LineId = l.LineId,
                         ArticleCode = l.ArticleCode,
                         Quantity = l.Quantity,
-                        Reason = l.Reason
+                        Reason = l.Reason,
+                        Resolution = l.Resolution
                     }).ToList()
                 })
                 .FirstOrDefaultAsync();

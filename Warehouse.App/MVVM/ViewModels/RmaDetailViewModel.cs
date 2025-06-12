@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Warehouse.App.MVVM.Services;
 using Warehouse.App.MVVM.Views;
@@ -10,13 +11,21 @@ namespace Warehouse.App.MVVM.ViewModels
     {
         private readonly IApiService _apiService;
         private readonly IServiceProvider _serviceProvider;
-        private readonly ReturnMerchandiseAuthorizationDto _returnMerchandiseAuthorization;
+
+        [ObservableProperty]
+        private ReturnMerchandiseAuthorizationDto _returnMerchandiseAuthorization;
+
+        [ObservableProperty]
+        private ObservableCollection<RmaDetailLineViewModel> _lines;
 
         public RmaDetailViewModel(IApiService apiService, IServiceProvider serviceProvider, ReturnMerchandiseAuthorizationDto returnMerchandiseAuthorization)
         {
             _apiService = apiService;
             _serviceProvider = serviceProvider;
             _returnMerchandiseAuthorization = returnMerchandiseAuthorization;
+            _lines = new ObservableCollection<RmaDetailLineViewModel>(
+               returnMerchandiseAuthorization.Lines.Select(line => new RmaDetailLineViewModel(line))
+            );
         }
 
         [RelayCommand]
