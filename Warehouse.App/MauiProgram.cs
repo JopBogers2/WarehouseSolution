@@ -32,11 +32,13 @@ public static class MauiProgram
         builder.Services.AddTransient<LoginViewModel>();
         builder.Services.AddTransient<DashboardViewModel>();
         builder.Services.AddTransient<BookingViewModel>();
+        builder.Services.AddTransient<RmaDetailViewModel>();
 
         builder.Services.AddTransient<LoginPage>();
         builder.Services.AddTransient<DashboardPage>();
         builder.Services.AddTransient<BookingPage>();
         builder.Services.AddTransient<ScanPage>();
+        builder.Services.AddTransient<RmaDetailPage>();
 
 
 #if DEBUG

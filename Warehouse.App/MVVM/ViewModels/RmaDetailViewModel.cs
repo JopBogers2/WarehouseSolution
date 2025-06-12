@@ -2,41 +2,28 @@
 using CommunityToolkit.Mvvm.Input;
 using Warehouse.App.MVVM.Services;
 using Warehouse.App.MVVM.Views;
+using Warehouse.Shared.Models;
 
 namespace Warehouse.App.MVVM.ViewModels
 {
-    public partial class BookingViewModel : ObservableObject
+    public partial class RmaDetailViewModel : ObservableObject
     {
         private readonly IApiService _apiService;
         private readonly IServiceProvider _serviceProvider;
+        private readonly ReturnMerchandiseAuthorizationDto _returnMerchandiseAuthorization;
 
-        [ObservableProperty]
-        private bool _isLoading = false;
-
-        [ObservableProperty]
-        private string? _errorMessage = null;
-
-        [ObservableProperty]
-        private string? _orderId;
-        [ObservableProperty]
-        private string? _trackAndTrace;
-        public BookingViewModel(IApiService apiService, IServiceProvider serviceProvider)
+        public RmaDetailViewModel(IApiService apiService, IServiceProvider serviceProvider, ReturnMerchandiseAuthorizationDto returnMerchandiseAuthorization)
         {
             _apiService = apiService;
             _serviceProvider = serviceProvider;
+            _returnMerchandiseAuthorization = returnMerchandiseAuthorization;
         }
 
         [RelayCommand]
-        private async Task ScanAsync()
+        private async Task Scan()
         {
             var scanPage = _serviceProvider.GetRequiredService<ScanPage>();
             await Shell.Current.Navigation.PushAsync(scanPage);
-        }
-
-        [RelayCommand]
-        private async Task SearchRmaAsync()
-        {
-
         }
     }
 }

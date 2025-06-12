@@ -21,6 +21,11 @@
         ContentTemplate="{DataTemplate pages:ScanPage}"
         Route="ScanPage" />
 
+    <ShellContent
+        Title="RMA Details"
+        ContentTemplate="{DataTemplate pages:RmaDetailPage}"
+        Route="RmaDetailPage" />
+
     <TabBar>
         <ShellContent
             Title="Dashboard"
