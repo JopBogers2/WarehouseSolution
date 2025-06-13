@@ -11,15 +11,10 @@
                 AlignItems="Start"
                 JustifyContent="Start"
                 Margin="0,20,0,10">
-            <Entry Placeholder="Order ID"
-                       Text="{Binding OrderId}"
-                       MinimumWidthRequest="150"
-                       FlexLayout.Grow="2"
-                       Margin="5,0,5,10" />
             <Entry Placeholder="Track And Trace"
                        Text="{Binding TrackAndTrace}"
                        MinimumWidthRequest="150"
-                       FlexLayout.Grow="2"
+                       FlexLayout.Grow="3"
                        Margin="5,0,5,10" />
             <Button Text="Search"
                         Command="{Binding SearchRmaCommand}"

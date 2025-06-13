@@ -17,8 +17,6 @@ namespace Warehouse.App.MVVM.ViewModels
         private string? _errorMessage = null;
 
         [ObservableProperty]
-        private string? _orderId;
-        [ObservableProperty]
         private string? _trackAndTrace;
         public BookingViewModel(IApiService apiService, IServiceProvider serviceProvider)
         {
@@ -36,7 +34,31 @@ namespace Warehouse.App.MVVM.ViewModels
         [RelayCommand]
         private async Task SearchRmaAsync()
         {
+            if (TrackAndTrace != null)
+            {
+                try
+                {
+                    IsLoading = true;
+                    ErrorMessage = null;
+                    var result = await _apiService.GetRmaByTrackAndTraceAsync(TrackAndTrace);
 
+                    if (result.IsSuccess && result.Data != null)
+                    {
+                        var viewModel = new RmaDetailViewModel(_apiService, _serviceProvider, result.Data);
+                        var rmaDetailPage = new RmaDetailPage(viewModel);
+
+                        await Shell.Current.Navigation.PushAsync(rmaDetailPage);
+                    }
+                    else
+                    {
+                        ErrorMessage = result.ErrorMessage ?? "Failed to load RMAs.";
+                    }
+                }
+                finally
+                {
+                    IsLoading = false;
+                }
+            }
         }
     }
 }
