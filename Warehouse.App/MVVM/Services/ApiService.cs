@@ -17,6 +17,7 @@ namespace Warehouse.App.MVVM.Services
             int pageNumber = 1,
             int pageSize = 20);
         Task<ApiResult<ReturnMerchandiseAuthorizationDto>> GetRmaByTrackAndTraceAsync(string code);
+        Task<ApiResult<ReturnDto>> PostReturn(ReturnDto returnDto);
     }
     public class ApiService : IApiService
     {
@@ -58,6 +59,9 @@ namespace Warehouse.App.MVVM.Services
         public Task<ApiResult<ReturnMerchandiseAuthorizationDto>> GetRmaByTrackAndTraceAsync(string code)
             => GetAsync<ReturnMerchandiseAuthorizationDto>($"api/app/returnMerchandiseAuthorization/byTrackAndTrace/{code}");
 
+        public Task<ApiResult<ReturnDto>> PostReturn(ReturnDto returnDto)
+            => PostAsync<ReturnDto>("api/app/book/return", returnDto);
+
         private async Task<HttpClient> CreateAuthorizedHttpClientAsync()
         {
             var httpClient = _httpClient.CreateClient(AppConstants.ApiClientName);
@@ -81,6 +85,23 @@ namespace Warehouse.App.MVVM.Services
             else
             {
                 return new ApiResult<T> { ErrorMessage = content };
+            }
+        }
+
+        private async Task<ApiResult<T>> PostAsync<T>(string url, T data)
+        {
+            var httpClient = await CreateAuthorizedHttpClientAsync();
+            var content = new StringContent(JsonSerializer.Serialize(data), System.Text.Encoding.UTF8, "application/json");
+            var response = await httpClient.PostAsync(url, content);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                var resultData = JsonSerializer.Deserialize<T>(responseContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                return new ApiResult<T> { Data = resultData };
+            }
+            else
+            {
+                return new ApiResult<T> { ErrorMessage = responseContent };
             }
         }
 

@@ -14,5 +14,6 @@
         public FulfillmentPickupPointAddress? PickupPointAddress { get; set; }
         public ICollection<FulfillmentLine> Lines { get; set; } = new List<FulfillmentLine>();
         public ICollection<ReturnMerchandiseAuthorization> ReturnMerchandiseAuthorizations { get; set; } = new List<ReturnMerchandiseAuthorization>();
+        public ICollection<Return> Returns { get; set; } = new List<Return>();
     }
 }

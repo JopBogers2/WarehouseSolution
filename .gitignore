@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /Warehouse.Api/auth.key.pub
 /Warehouse.Api/appsettings.json
+/Warehouse.Api/appsettings.json

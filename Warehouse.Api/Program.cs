@@ -16,6 +16,8 @@ builder.Services.AddOpenApi();
 var connectionString = builder.Configuration.GetConnectionString("Database");
 builder.Services.AddDbContext<DefaultDbContext>(options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
+builder.Services.AddHttpClient();
+
 // Read the public key from the file
 var publicKey = File.ReadAllText("auth.key.pub");
 

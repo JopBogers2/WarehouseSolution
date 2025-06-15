@@ -11,6 +11,8 @@ namespace Warehouse.Api.Data
         public DbSet<FulfillmentLine> FulfillmentLines { get; set; } = null!;
         public DbSet<ReturnMerchandiseAuthorization> ReturnMerchandiseAuthorizations { get; set; }
         public DbSet<ReturnMerchandiseAuthorizationLine> ReturnMerchandiseAuthorizationLines { get; set; }
+        public DbSet<Return> Returns { get; set; }
+        public DbSet<ReturnLine> ReturnLines { get; set; }
         public DbSet<TrackAndTrace> TrackAndTraces { get; set; }
     }
 }
