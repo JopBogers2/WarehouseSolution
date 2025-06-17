@@ -35,6 +35,10 @@
             Title="Book"
             ContentTemplate="{DataTemplate pages:BookingPage}"
             Route="BookingPage" />
+        <ShellContent
+          Title="Settings"
+          ContentTemplate="{DataTemplate pages:SettingsPage}"
+          Route="SettingsPage" />
     </TabBar>
 
 </Shell>

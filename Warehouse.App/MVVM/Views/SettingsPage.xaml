@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Warehouse.App.MVVM.Views.SettingsPage"
+             Title="Settings">
+    <VerticalStackLayout
+        Padding="24"
+        Spacing="24"
+        VerticalOptions="Center"
+        HorizontalOptions="Center">
+
+        <Button
+            Text="Logout"
+            x:Name="LogoutButton"
+            FontAttributes="Bold"
+            CornerRadius="8"
+            Padding="12,6"
+            WidthRequest="200"
+            Clicked="LogoutButton_Clicked" />
+
+    </VerticalStackLayout>
+</ContentPage>
