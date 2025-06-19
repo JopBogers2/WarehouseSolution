@@ -5,15 +5,18 @@ using ZXing.Net.Maui;
 
 public partial class ScanPage : ContentPage
 {
-    private readonly IServiceProvider _serviceProvider;
+    private readonly INavigationService _navigationService;
     private readonly IApiService _apiService;
+    public readonly IPageService _pageService;
+
     private readonly HashSet<string> _searchedBarcodes = new();
 
-    public ScanPage(IServiceProvider serviceProvider, IApiService apiService)
+    public ScanPage(INavigationService navigationService, IApiService apiService, IPageService pageService)
     {
         InitializeComponent();
-        _serviceProvider = serviceProvider;
+        _navigationService = navigationService;
         _apiService = apiService;
+        _pageService = pageService;
         BarcodeReader.Options = new BarcodeReaderOptions
         {
             AutoRotate = true,
@@ -39,11 +42,10 @@ public partial class ScanPage : ContentPage
                     BarcodeReader.IsDetecting = false;
                     BarcodeReader.Handler?.DisconnectHandler();
 
-                    var viewModel = new RmaDetailViewModel(_apiService, _serviceProvider, result.Data);
-                    var rmaDetailPage = new RmaDetailPage(viewModel);
+                    var viewModel = new RmaDetailViewModel(_apiService, _navigationService, result.Data);
 
-                    await Shell.Current.Navigation.PushAsync(rmaDetailPage);
-                    Shell.Current.Navigation.RemovePage(this);
+                    await _navigationService.PushAsync(_pageService.CreateRmaDetailPage(viewModel));
+                    _navigationService.RemovePage(this);
                 });
 
                 break;

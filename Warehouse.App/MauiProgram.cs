@@ -26,6 +26,9 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<IAuthService, AuthService>();
         builder.Services.AddSingleton<IApiService, ApiService>();
+        builder.Services.AddSingleton<INavigationService, NavigationService>();
+        builder.Services.AddSingleton<IPageService, PageService>();
+
 
         builder.Services.AddSingleton<MainPage>();
 

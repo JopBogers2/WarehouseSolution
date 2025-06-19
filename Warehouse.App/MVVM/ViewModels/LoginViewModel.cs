@@ -8,7 +8,8 @@ namespace Warehouse.App.MVVM.ViewModels
 {
     public partial class LoginViewModel : ObservableObject
     {
-        private readonly IAuthService authService;
+        private readonly IAuthService _authService;
+        private readonly INavigationService _navigationService;
 
         [ObservableProperty]
         private string _username = string.Empty;
@@ -27,9 +28,10 @@ namespace Warehouse.App.MVVM.ViewModels
 
         public bool CanLogin => Valid && !Loading;
 
-        public LoginViewModel(IAuthService authService)
+        public LoginViewModel(IAuthService authService, INavigationService navigationService)
         {
-            this.authService = authService;
+            _authService = authService;
+            _navigationService = navigationService;
         }
 
         partial void OnUsernameChanged(string value)
@@ -60,11 +62,11 @@ namespace Warehouse.App.MVVM.ViewModels
         private async Task Login()
         {
             Loading = true;
-            var error = await authService.LoginAsync(new LoginRequestDto(Username, Password));
+            var error = await _authService.LoginAsync(new LoginRequestDto(Username, Password));
             Loading = false;
             if (string.IsNullOrWhiteSpace(error))
             {
-                await Shell.Current.GoToAsync($"//{nameof(DashboardPage)}");
+                await _navigationService.GoToAsync($"//{nameof(DashboardPage)}");
                 return;
             }
 

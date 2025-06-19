@@ -9,6 +9,8 @@ namespace Warehouse.App.MVVM.ViewModels
     {
         private readonly IApiService _apiService;
         private readonly IServiceProvider _serviceProvider;
+        public readonly IPageService _pageService;
+        private readonly INavigationService _navigationService;
 
         [ObservableProperty]
         private bool _isLoading = false;
@@ -18,17 +20,19 @@ namespace Warehouse.App.MVVM.ViewModels
 
         [ObservableProperty]
         private string? _trackAndTrace;
-        public BookingViewModel(IApiService apiService, IServiceProvider serviceProvider)
+        public BookingViewModel(IApiService apiService, IServiceProvider serviceProvider, IPageService pageService, INavigationService navigationService)
         {
             _apiService = apiService;
             _serviceProvider = serviceProvider;
+            _pageService = pageService;
+            _navigationService = navigationService;
         }
 
         [RelayCommand]
         private async Task ScanAsync()
         {
             var scanPage = _serviceProvider.GetRequiredService<ScanPage>();
-            await Shell.Current.Navigation.PushAsync(scanPage);
+            await _navigationService.PushAsync(scanPage);
         }
 
         [RelayCommand]
@@ -44,10 +48,8 @@ namespace Warehouse.App.MVVM.ViewModels
 
                     if (result.IsSuccess && result.Data != null)
                     {
-                        var viewModel = new RmaDetailViewModel(_apiService, _serviceProvider, result.Data);
-                        var rmaDetailPage = new RmaDetailPage(viewModel);
-
-                        await Shell.Current.Navigation.PushAsync(rmaDetailPage);
+                        var viewModel = new RmaDetailViewModel(_apiService, _navigationService, result.Data);
+                        await _navigationService.PushAsync(_pageService.CreateRmaDetailPage(viewModel));
                     }
                     else
                     {

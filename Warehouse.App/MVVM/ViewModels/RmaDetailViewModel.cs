@@ -9,7 +9,7 @@ namespace Warehouse.App.MVVM.ViewModels
     public partial class RmaDetailViewModel : ObservableObject
     {
         private readonly IApiService _apiService;
-        private readonly IServiceProvider _serviceProvider;
+        private readonly INavigationService _navigationService;
 
         [ObservableProperty]
         private ReturnMerchandiseAuthorizationDto _returnMerchandiseAuthorization;
@@ -20,10 +20,10 @@ namespace Warehouse.App.MVVM.ViewModels
         [ObservableProperty]
         private string? _errorMessage;
 
-        public RmaDetailViewModel(IApiService apiService, IServiceProvider serviceProvider, ReturnMerchandiseAuthorizationDto returnMerchandiseAuthorization)
+        public RmaDetailViewModel(IApiService apiService, INavigationService navigationService, ReturnMerchandiseAuthorizationDto returnMerchandiseAuthorization)
         {
             _apiService = apiService;
-            _serviceProvider = serviceProvider;
+            _navigationService = navigationService;
             _returnMerchandiseAuthorization = returnMerchandiseAuthorization;
             _lines = new ObservableCollection<RmaDetailLineViewModel>(
                returnMerchandiseAuthorization.Lines.Select(line => new RmaDetailLineViewModel(line))
@@ -82,7 +82,7 @@ namespace Warehouse.App.MVVM.ViewModels
 
             if (result.IsSuccess && result.Data != null)
             {
-                await Shell.Current.Navigation.PopAsync();
+                await _navigationService.PopAsync();
             }
             else
             {
